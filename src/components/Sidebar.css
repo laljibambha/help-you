@@ -1,0 +1,42 @@
+/* Sidebar.css */
+
+.sidebar {
+  width: 150px;
+  height: 100%;
+  background-color: #ebe6e6; /* Sidebar background color */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  color: #0e0e0e; /* Text color */
+  padding-top: 20px; /* Adjust top padding as needed */
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px; /* Adjust bottom margin as needed */
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.menu li:hover {
+  background-color: #555; /* Hover background color */
+  color: wheat;
+}
+
+.menu a {
+  color: inherit;
+  /* text-decoration: none; */
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 10px; /* Adjust right margin as needed */
+}

@@ -1,0 +1,72 @@
+.Service {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-item {
+  display: flex; /* Display service items in a row */
+  align-items: center; /* Align items vertically in the center */
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  justify-content: space-between;
+  width: 970px;
+}
+
+.service-image img {
+  width: 100px;
+  max-height: 100px; /* Adjust the height as needed */
+  margin-right: 10px; /* Add some space between image and text */
+}
+
+.service-name {
+  flex: 1; /* Allow service name to take remaining space */
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+  text-align: center;
+}
+
+/* Style for both edit and remove buttons */
+.service-edit, .service-remove {
+  margin-right: 10px;
+  color: #0a0101;
+  padding: 5px 10px;
+  width: 70px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+.add-service {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: transparent;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  border-radius: 10px;
+  color: #fff;
+  background-color: #0a0101;
+  padding: 3px 10px;
+  width: 90px;
+  margin-bottom: 0px;
+  text-align: center;
+  position: relative; /* Change to fixed position */
+  top: 15px;
+  left: 1020px;
+  transition: background-color 0.3s ease;
+}
+
+.add-service:disabled {
+  pointer-events: none;
+}
+
+.add-service:hover {
+  color: #fff;
+  background-color: #735df1;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.add-service:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
