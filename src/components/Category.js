@@ -1,54 +1,49 @@
 import React, { useState, useEffect } from "react";
 import "./Category.css";
 import "./CategoryForm.css";
+import EditCategoryPopup from "./EditCategoryPopup";
 
 function Category() {
-  const getCategoriesUrl = "http://192.168.1.34:8000/category/getCategories";
-  const addCategoryUrl = "http://192.168.1.34:8000/category/addCategory";
-  const updateCategoryUrl = "http://192.168.1.34:8000/category/updateCategory";
-  const deleteCategoryUrl = "http://192.168.1.34:8000/category/deleteCategory";
+  const apiUrl = "http://192.168.1.34:8000/category/getCategory";
+  const addCategoryUrl = "http://192.168.1.34:8000/Category/upload";
+  const updateCategoryUrl = "http://192.168.1.34:8000/Category/updateCategory";
+  const deleteCategoryUrl = "http://192.168.1.34:8000/Category/deleteCategory";
+  const updateCategoryImageUrl = "http://192.168.1.34:8000/Category/updateCategoryImage";
 
-  const [categories, setCategories] = useState([]);
-  const [services, setServices] = useState([]);
+  const [data, setData] = useState([]);
   const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
   const [newCategory, setNewCategory] = useState({
     name: "",
-    serviceId: null,
     image: null,
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const [editedCategory, setEditedCategory] = useState({ id: null, name: "" });
+  const [services, setServices] = useState([]);
+  const [selectedService, setSelectedService] = useState("");
 
-  const fetchCategories = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch(getCategoriesUrl);
+      const response = await fetch(apiUrl);
       if (response.ok) {
-        const data = await response.json();
-        setCategories(data);
+        const responseData = await response.json();
+
+        // Assuming the API response is an array or an object with a property containing the array
+        const receivedData = Array.isArray(responseData) ? responseData : responseData.data;
+
+        setData(receivedData);
       }
     } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  const fetchServices = async () => {
-    try {
-      const response = await fetch("http://192.168.1.34:8000/service/getService");
-      if (response.ok) {
-        const data = await response.json();
-        setServices(data);
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
   const handleEditClick = (id, name) => {
     setEditedCategory({ id, name });
-  };
+  }
 
   const handleEditCategoryName = (e) => {
     setEditedCategory({ ...editedCategory, name: e.target.value });
-  };
+  }
 
   const handleSaveEditedCategory = async () => {
     if (editedCategory.id === null) {
@@ -61,32 +56,52 @@ function Category() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: editedCategory.id,
-          name: editedCategory.name,
-        }),
+        body: JSON.stringify({ id: editedCategory.id, name: editedCategory.name }),
       });
 
       if (response.ok) {
-        const updatedCategories = categories.map((category) => {
-          if (category.id === editedCategory.id) {
-            return { ...category, name: editedCategory.name };
+        const updatedData = data.map(Category => {
+          if (Category.id === editedCategory.id) {
+            return { ...Category, name: editedCategory.name };
           }
-          return category;
+          return Category;
         });
-        setCategories(updatedCategories);
+        setData(updatedData);
         setEditedCategory({ id: null, name: "" });
       } else {
-        console.error(
-          "Failed to update category. Response status:",
-          response.status
-        );
+        console.error("Failed to update Category. Response status:", response.status);
         console.error("Response text:", await response.text());
       }
     } catch (error) {
-      console.error("Error updating category:", error);
+      console.error("Error updating Category:", error);
     }
-  };
+  }
+
+  const handleEditCategoryImage = async (file) => {
+    if (editedCategory.id === null) {
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("id", editedCategory.id);
+      formData.append("image", file);
+
+      const response = await fetch(updateCategoryImageUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Category image updated successfully.");
+      } else {
+        console.error("Failed to update Category image. Response status:", response.status);
+        console.error("Response text:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error updating Category image:", error);
+    }
+  }
 
   const handleRemoveClick = async (id) => {
     try {
@@ -99,38 +114,36 @@ function Category() {
       });
 
       if (response.ok) {
-        setCategories(categories.filter((category) => category.id !== id));
+        setData(data.filter(Category => Category.id !== id));
       } else {
-        console.error(
-          "Failed to delete category. Response status:",
-          response.status
-        );
+        console.error("Failed to delete Category. Response status:", response.status);
         console.error("Response text:", await response.text());
       }
     } catch (error) {
-      console.error("Error removing category:", error);
+      console.error("Error removing Category:", error);
     }
-  };
+  }
 
   const handleAddCategoryClick = () => {
     setShowAddCategoryForm(true);
-  };
+  }
 
   const handleCancelAddCategory = () => {
     setShowAddCategoryForm(false);
     setNewCategory({
       name: "",
-      serviceId: null,
       image: null,
     });
-  };
+    setImagePreview(null);
+    setSelectedService("");
+  }
 
   const handleSaveCategory = async () => {
     try {
       const formData = new FormData();
       formData.append("name", newCategory.name);
-      formData.append("serviceId", newCategory.serviceId);
       formData.append("image", newCategory.image);
+      formData.append("service", selectedService);
 
       const response = await fetch(addCategoryUrl, {
         method: "POST",
@@ -139,54 +152,58 @@ function Category() {
 
       if (response.ok) {
         const addedCategory = await response.json();
-        setCategories([...categories, addedCategory]);
-        handleCancelAddCategory();
+        setData([...data, addedCategory]);
+        handleCancelAddCategory(); // Close the form only after successful response
       } else {
-        console.error("Failed to add category");
+        console.error("Failed to add Category");
       }
     } catch (error) {
-      console.error("Error adding category:", error);
+      console.error("Error adding Category:", error);
     }
-  };
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setNewCategory({ ...newCategory, image: file });
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    } else {
+      setImagePreview(null);
+    }
+  }
+
+  const fetchServices = async () => {
+    const servicesUrl = "http://192.168.1.34:8000/service/getService";
+
+    try {
+      const response = await fetch(servicesUrl);
+      if (response.ok) {
+        const servicesData = await response.json();
+        setServices(servicesData);
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchData();
     fetchServices();
   }, []);
 
   return (
+    <div>
+     <h1>Category</h1>
     <div className="Category">
-      <button className="add-category" onClick={handleAddCategoryClick}>
+      <button className="add-Category" onClick={handleAddCategoryClick}>
         Add Category
       </button>
       {showAddCategoryForm && (
         <div className="popup">
-          <div className="add-category-form">
+          <div className="add-Category-form">
             <h2>Add New Category</h2>
-            <select
-              className="input-field"
-              value={newCategory.serviceId}
-              onChange={(e) =>
-                setNewCategory({
-                  ...newCategory,
-                  serviceId: e.target.value,
-                })
-              }
-            >
-              <option value="" disabled>
-                Select Service
-              </option>
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.name}
-                </option>
-              ))}
-            </select>
             <input
               type="text"
               className="input-field"
@@ -198,19 +215,27 @@ function Category() {
             />
             <input
               type="file"
-              accept="image/*"
+              accept=".jpg, .jpeg, .png"
+              className="input-field"
               onChange={handleImageChange}
             />
+            {imagePreview && (
+              <img src={imagePreview} alt="Selected" className="image-preview" />
+            )}
+            <select
+              className="input-field"
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+            >
+              <option value="" disabled>Select Service</option>
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.name}
+                </option>
+              ))}
+            </select>
             <div className="form-buttons">
-              <button
-                className="save-button"
-                onClick={() => {
-                  handleSaveCategory();
-                  document.getElementById("service-section").scrollIntoView({
-                    behavior: "smooth",
-                  });
-                }}
-              >
+              <button className="save-button" onClick={handleSaveCategory}>
                 Save
               </button>
               <button
@@ -223,32 +248,36 @@ function Category() {
           </div>
         </div>
       )}
-      {categories.map((category) => (
-        <div className="category-item" key={category.id}>
-          <p className="category-name">{category.name}</p>
-          <button
-            className="category-edit"
-            onClick={() => handleEditClick(category.id, category.name)}
-          >
+      {data.map((dataObj) => (
+        <div className="Category-item" key={dataObj.id}>
+          <div className="Category-image">
+            <img src={"http://192.168.1.34:8000/images/" + dataObj.image} alt={dataObj.name} />
+          </div>
+          {editedCategory.id === dataObj.id ? (
+            <EditCategoryPopup
+              editedCategory={editedCategory}
+              handleEditCategoryName={handleEditCategoryName}
+              handleSaveEditedCategory={handleSaveEditedCategory}
+              handleEditCategoryImage={handleEditCategoryImage}
+            />
+          ) : (
+            <div>
+              <p className="Category-name">{dataObj.name}</p>
+              <p className="Service-name">Service: {dataObj.service_name}</p>
+            </div>
+          )}
+          <button className="Category-edit" onClick={() => handleEditClick(dataObj.id, dataObj.name)}>
             Edit
           </button>
-          <button
-            className="category-remove"
-            onClick={() => handleRemoveClick(category.id)}
-          >
+          <button className="Category-remove" onClick={() => handleRemoveClick(dataObj.id)}>
             Remove
           </button>
         </div>
       ))}
-       <div className="services-section">
-        <ul>
-          {services.map((service) => (
-            <li key={service.id}>{service.name}</li>
-          ))}
-        </ul>
-      </div>
+    </div>
     </div>
   );
 }
+
 
 export default Category;

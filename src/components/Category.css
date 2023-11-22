@@ -1,17 +1,59 @@
-/* Category.css */
+h1 {
+  text-align: center;
+  font-family: 'Nunito Sans', sans-serif;
+  color: #363838;
+  font-size: 28px;
+  margin-bottom: -30px;
+  color: red;
+}
+
 
 .Category {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    font-family: "Arial", sans-serif;
-  }
-  
-  .add-category {
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.Category-item {
+  display: flex; /* Display Category items in a row */
+  align-items: center; /* Align items vertically in the center */
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  justify-content: space-between;
+  width: 970px;
+}
+
+.Category-image img {
+  width: 100px;
+  max-height: 100px; /* Adjust the height as needed */
+  margin-right: 10px; /* Add some space between image and text */
+}
+
+.Category-name {
+  flex: 1; /* Allow Category name to take remaining space */
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+  text-align: center;
+}
+
+/* Style for both edit and remove buttons */
+.Category-edit,
+.Category-remove {
+  margin-right: 10px;
+  color: #0a0101;
+  padding: 5px 10px;
+  width: 70px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+.add-Category {
+  box-sizing: border-box;
   appearance: none;
   background-color: transparent;
-  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   border-radius: 10px;
   color: #fff;
   background-color: #0a0101;
@@ -20,144 +62,23 @@
   margin-bottom: 0px;
   text-align: center;
   position: relative; /* Change to fixed position */
-  top: 2px;
-  left: 990px;
+  top: 15px;
+  left: 1020px;
   transition: background-color 0.3s ease;
-  }
-  
-  .add-category:hover {
-    background-color: #45a049;
-  }
-  
-  .popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px; /* Adjust width */
-    background: rgba(0, 0, 0, 0.8); /* Darken the background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .add-category-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Adjust the size of the input fields */
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  /* Style for buttons */
-  .form-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .save-button,
-  .cancel-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .save-button {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .save-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .cancel-button {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .cancel-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Category item styles */
-  .category-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s;
-  }
-  
-  .category-item:hover {
-    transform: scale(1.02);
-  }
-  
-  .category-name {
-    flex-grow: 1;
-    margin-right: 10px;
-    font-size: 18px;
-    color: #0a0101; /* Adjust color */
-  }
-  
-  /* Style for both edit and remove buttons */
-  .category-edit,
-  .category-remove {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .category-edit {
-    background-color: #2196f3;
-    color: #fff;
-  }
-  
-  .category-edit:hover {
-    background-color: #0d8bf2;
-  }
-  
-  .category-remove {
-    background-color: #f44336;
-    color: #fff;
-  }
-  
-  .category-remove:hover {
-    background-color: #d32f2f;
-  }
+}
 
-  .services-section {
-    margin-top: 20px;
-  }
-  
-  /* Add more styles for the services list as needed */
-  .services-section ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .services-section li {
-    margin-bottom: 8px;
-    background-color: #f0f0f0;
-    padding: 8px;
-  }
+.add-Category:disabled {
+  pointer-events: none;
+}
+
+.add-Category:hover {
+  color: #fff;
+  background-color: #735df1;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.add-Category:active {
+  box-shadow: none;
+  transform: translateY(0);
+}

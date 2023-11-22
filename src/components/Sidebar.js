@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FaHome , FaUser, } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import { GrServices } from "react-icons/gr";
+import { PiArrowElbowDownRightBold } from "react-icons/pi";
+import { MdProductionQuantityLimits } from "react-icons/md";
 import "./Sidebar.css";
 
 function Sidebar() {
@@ -35,6 +37,18 @@ function Sidebar() {
           <Link to="/home/category">
             <BiSolidCategory  className="icon"/>
             Category
+          </Link>
+        </li>
+        <li>
+          <Link to="/home/sub_category">
+            <PiArrowElbowDownRightBold  className="icon"/>
+            Sub_Category
+          </Link>
+        </li>
+        <li>
+          <Link to="/home/product">
+            <MdProductionQuantityLimits  className="icon"/>
+            Product
           </Link>
         </li>
       </ul>

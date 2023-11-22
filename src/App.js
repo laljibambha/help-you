@@ -7,6 +7,8 @@ import Service from "./components/Service";
 import User from "./components/User";
 import Category from "./components/Category";
 import "./App.css";
+import Sub_Category from "./components/Sub_Category";
+import Product from "./components/Product";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -43,6 +45,8 @@ function App() {
             <Route path="service" element={<Service />} />
             <Route path="user" element={<User />} />
             <Route path="category" element={<Category />} />
+            <Route path="sub_category" element={<Sub_Category />} />
+            <Route path="product" element={<Product />} />
           </Route>
         </Routes>
       </div>
