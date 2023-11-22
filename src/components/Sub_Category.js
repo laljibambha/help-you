@@ -6,11 +6,11 @@ import "./Sub_CategoryForm.css";
 import EditSub_CategoryPopup from "./EditSub_CategoryPopup";
 
 function SubCategory() {
-  const apiUrl = "http://192.168.1.34:8000/sub_category/getSubcategory";
-  const addSubCategoryUrl = "http://192.168.1.34:8000/sub_category/upload";
-  const updateSubCategoryUrl = "http://192.168.1.34:8000/sub_category/updatesub_category";
-  const deleteSubCategoryUrl = "http://192.168.1.34:8000/sub_category/deletesub_category";
-  const updateSubCategoryImageUrl = "http://192.168.1.34:8000/sub_category/updatesub_categoryImage";
+  const apiUrl = "http://192.168.1.40:8000/sub_category/getSubcategory";
+  const addSubCategoryUrl = "http://192.168.1.40:8000/sub_category/upload";
+  const updateSubCategoryUrl = "http://192.168.1.40:8000/sub_category/updatesub_category";
+  const deleteSubCategoryUrl = "http://192.168.1.40:8000/sub_category/deletesub_category";
+  const updateSubCategoryImageUrl = "http://192.168.1.40:8000/sub_category/updatesub_categoryImage";
 
   const [data, setData] = useState([]);
   const [showAddSubCategoryForm, setShowAddSubCategoryForm] = useState(false);
@@ -177,7 +177,7 @@ function SubCategory() {
   }
 
   const fetchServices = async () => {
-    const servicesUrl = "http://192.168.1.34:8000/service/getService";
+    const servicesUrl = "http://192.168.1.40:8000/service/getService";
 
     try {
       const response = await fetch(servicesUrl);
@@ -252,7 +252,7 @@ function SubCategory() {
        {data.map((dataObj) => (
           <div className="sub-category-item" key={dataObj.id}>
             <div className="sub-category-image">
-              <img src={`http://192.168.1.34:8000/images/${dataObj.image}`} alt={dataObj.name} />
+              <img src={`http://192.168.1.40:8000/images/${dataObj.image}`} alt={dataObj.name} />
             </div>
             {editedSubCategory.id === dataObj.id ? (
               <EditSub_CategoryPopup
