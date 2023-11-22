@@ -3,25 +3,23 @@ import "./Product.css";
 import EditProductPopup from "./EditProductPopup";
 
 function Product() {
-  const apiUrl = "http://192.168.1.34:8000/product/getProduct";
-  const addProductUrl = "http://192.168.1.34:8000/Product/upload";
-  const updateProductUrl = "http://192.168.1.34:8000/Product/updateProduct";
-  const deleteProductUrl = "http://192.168.1.34:8000/Product/deleteProduct";
+  const apiUrl = "http://192.168.1.40:8000/product/getProduct";
+  const addProductUrl = "http://192.168.1.40:8000/Product/upload";
+  const updateProductUrl = "http://192.168.1.40:8000/Product/updateProduct";
+  const deleteProductUrl = "http://192.168.1.40:8000/Product/deleteProduct";
 
   const [data, setData] = useState([]);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     product_name: "",
     product_mrp: "",
-    sub_category_id: "",
-    disable_mrp: true,
+    sub_category_name: "",
   });
   const [editedProduct, setEditedProduct] = useState({
     id: null,
     product_name: "",
     product_mrp: "",
-    sub_category_id: "",
-    disable_mrp: true,
+    sub_category_name: "",
   });
 
   const fetchData = async () => {
@@ -37,8 +35,8 @@ function Product() {
     }
   };
 
-  const handleEditClick = (id, product_name, product_mrp, sub_category_id, disable_mrp) => {
-    setEditedProduct({ id, product_name, product_mrp, sub_category_id, disable_mrp });
+  const handleEditClick = (id, product_name, product_mrp, sub_category_name) => {
+    setEditedProduct({ id, product_name, product_mrp, sub_category_name });
   };
 
   const handleEditProductName = (e) => {
@@ -60,8 +58,7 @@ function Product() {
           id: editedProduct.id,
           product_name: editedProduct.product_name,
           product_mrp: editedProduct.product_mrp,
-          sub_category_id: editedProduct.sub_category_id,
-          disable_mrp: editedProduct.disable_mrp,
+          sub_category_name: editedProduct.sub_category_name,
         }),
       });
 
@@ -72,8 +69,7 @@ function Product() {
               ...product,
               product_name: editedProduct.product_name,
               product_mrp: editedProduct.product_mrp,
-              sub_category_id: editedProduct.sub_category_id,
-              disable_mrp: editedProduct.disable_mrp,
+              sub_category_name: editedProduct.sub_category_name,
             };
           }
           return product;
@@ -83,8 +79,7 @@ function Product() {
           id: null,
           product_name: "",
           product_mrp: "",
-          sub_category_id: "",
-          disable_mrp: true,
+          sub_category_name: "",
         });
       } else {
         console.error("Failed to update Product. Response status:", response.status);
@@ -125,8 +120,7 @@ function Product() {
     setNewProduct({
       product_name: "",
       product_mrp: "",
-      sub_category_id: "",
-      disable_mrp: true,
+      sub_category_name: "",
     });
   };
 
@@ -140,8 +134,7 @@ function Product() {
         body: JSON.stringify({
           product_name: newProduct.product_name,
           product_mrp: newProduct.product_mrp,
-          sub_category_id: newProduct.sub_category_id,
-          disable_mrp: newProduct.disable_mrp,
+          sub_category_name: newProduct.sub_category_name,
         }),
       });
 
@@ -187,18 +180,10 @@ function Product() {
             <input
               type="text"
               className="input-field"
-              placeholder="Sub Category ID"
-              value={newProduct.sub_category_id}
-              onChange={(e) => setNewProduct({ ...newProduct, sub_category_id: e.target.value })}
+              placeholder="Sub Category Name"
+              value={newProduct.sub_category_name}
+              onChange={(e) => setNewProduct({ ...newProduct, sub_category_name: e.target.value })}
             />
-            <label>
-              Disable MRP:
-              <input
-                type="checkbox"
-                checked={newProduct.disable_mrp}
-                onChange={(e) => setNewProduct({ ...newProduct, disable_mrp: e.target.checked })}
-              />
-            </label>
             <div className="form-buttons">
               <button className="save-button" onClick={handleSaveProduct}>
                 Save
@@ -213,11 +198,10 @@ function Product() {
       <div className="Product-list">
         {data.map((dataObj) => (
           <div className="Product-item" key={dataObj.id}>
-            <div>
+            <div className="Product-details">
               <p className="Product-name">{dataObj.product_name}</p>
               <p className="Product-mrp">{dataObj.product_mrp}</p>
-              <p className="Sub-category-id">{dataObj.sub_category_id}</p>
-              <p className="Disable-mrp">{dataObj.disable_mrp ? "MRP Disabled" : "MRP Enabled"}</p>
+              <p className="Sub-category-name">{dataObj.sub_category_name}</p>
             </div>
             {editedProduct.id === dataObj.id ? (
               <EditProductPopup
@@ -234,8 +218,7 @@ function Product() {
                       dataObj.id,
                       dataObj.product_name,
                       dataObj.product_mrp,
-                      dataObj.sub_category_id,
-                      dataObj.disable_mrp
+                      dataObj.sub_category_name
                     )
                   }
                 >

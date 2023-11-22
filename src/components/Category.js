@@ -4,11 +4,11 @@ import "./CategoryForm.css";
 import EditCategoryPopup from "./EditCategoryPopup";
 
 function Category() {
-  const apiUrl = "http://192.168.1.34:8000/category/getCategory";
-  const addCategoryUrl = "http://192.168.1.34:8000/Category/upload";
-  const updateCategoryUrl = "http://192.168.1.34:8000/Category/updateCategory";
-  const deleteCategoryUrl = "http://192.168.1.34:8000/Category/deleteCategory";
-  const updateCategoryImageUrl = "http://192.168.1.34:8000/Category/updateCategoryImage";
+  const apiUrl = "http://192.168.1.40:8000/category/getCategory";
+  const addCategoryUrl = "http://192.168.1.40:8000/Category/upload";
+  const updateCategoryUrl = "http://192.168.1.40:8000/Category/updateCategory";
+  const deleteCategoryUrl = "http://192.168.1.40:8000/Category/deleteCategory";
+  const updateCategoryImageUrl = "http://192.168.1.40:8000/Category/updateCategoryImage";
 
   const [data, setData] = useState([]);
   const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
@@ -175,7 +175,7 @@ function Category() {
   }
 
   const fetchServices = async () => {
-    const servicesUrl = "http://192.168.1.34:8000/service/getService";
+    const servicesUrl = "http://192.168.1.40:8000/service/getService";
 
     try {
       const response = await fetch(servicesUrl);
@@ -251,7 +251,7 @@ function Category() {
       {data.map((dataObj) => (
         <div className="Category-item" key={dataObj.id}>
           <div className="Category-image">
-            <img src={"http://192.168.1.34:8000/images/" + dataObj.image} alt={dataObj.name} />
+            <img src={"http://192.168.1.40:8000/images/" + dataObj.image} alt={dataObj.name} />
           </div>
           {editedCategory.id === dataObj.id ? (
             <EditCategoryPopup

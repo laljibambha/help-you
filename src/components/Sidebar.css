@@ -32,9 +32,13 @@
 
 .menu a {
   color: inherit;
-  /* text-decoration: none; */
   display: flex;
   align-items: center;
+  text-decoration: none; /* Remove underline */
+}
+
+.menu a:hover {
+  text-decoration: none; /* Remove underline on hover */
 }
 
 .icon {

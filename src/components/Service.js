@@ -4,11 +4,11 @@ import "./ServiceForm.css";
 import EditServicePopup from "./EditServicePopup";
 
 function Service() {
-  const url = "http://192.168.1.34:8000/service/getService";
-  const addServiceUrl = "http://192.168.1.34:8000/service/upload";
-  const updateServiceUrl = "http://192.168.1.34:8000/service/updateService";
-  const deleteServiceUrl = "http://192.168.1.34:8000/service/deleteService";
-  const updateServiceImageUrl = "http://192.168.1.34:8000/service/updateServiceImage";
+  const url = "http://192.168.1.40:8000/service/getService";
+  const addServiceUrl = "http://192.168.1.40:8000/service/upload";
+  const updateServiceUrl = "http://192.168.1.40:8000/service/updateService";
+  const deleteServiceUrl = "http://192.168.1.40:8000/service/deleteService";
+  const updateServiceImageUrl = "http://192.168.1.40:8000/service/updateServiceImage";
   
   const [data, setData] = useState([]);
   const [showAddServiceForm, setShowAddServiceForm] = useState(false);
@@ -214,7 +214,7 @@ function Service() {
       {data.map((dataObj) => (
         <div className="service-item" key={dataObj.id}>
           <div className="service-image">
-            <img src={"http://192.168.1.34:8000/images/" + dataObj.image} alt={dataObj.name} />
+            <img src={"http://192.168.1.40:8000/images/" + dataObj.image} alt={dataObj.name} />
           </div>
           {editedService.id === dataObj.id ? (
             <EditServicePopup
