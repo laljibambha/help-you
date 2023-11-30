@@ -1,6 +1,7 @@
 // Sidebar.js
 import React from "react";
 import { Link } from "react-router-dom";
+import { IoMdHelpCircleOutline } from "react-icons/io";
 import { FaHome, FaUser } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
@@ -49,6 +50,18 @@ function Sidebar() {
           <Link to="/home/product">
             <MdProductionQuantityLimits className="icon" />
             Product
+          </Link>
+        </li>
+        <li>
+          <Link to="/home/order">
+            <MdProductionQuantityLimits className="icon" />
+            Order
+          </Link>
+        </li>
+        <li>
+          <Link to="/home/help">
+            <IoMdHelpCircleOutline className="icon" />
+            Help
           </Link>
         </li>
       </ul>

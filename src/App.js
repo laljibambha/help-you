@@ -9,6 +9,8 @@ import Category from "./components/Category";
 import "./App.css";
 import Sub_Category from "./components/Sub_Category";
 import Product from "./components/Product";
+import Order from "./components/Order";
+import Help from "./components/Help";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -47,6 +49,8 @@ function App() {
             <Route path="category" element={<Category />} />
             <Route path="sub_category" element={<Sub_Category />} />
             <Route path="product" element={<Product />} />
+            <Route path="order" element={<Order />} />
+            <Route path="help" element={<Help />} />
           </Route>
         </Routes>
       </div>

@@ -3,23 +3,28 @@ import "./Product.css";
 import EditProductPopup from "./EditProductPopup";
 
 function Product() {
-  const apiUrl = "http://192.168.1.40:8000/product/getProduct";
-  const addProductUrl = "http://192.168.1.40:8000/Product/upload";
-  const updateProductUrl = "http://192.168.1.40:8000/Product/updateProduct";
-  const deleteProductUrl = "http://192.168.1.40:8000/Product/deleteProduct";
+  const baseApiUrl = "http://192.168.1.40:8000/";
+  const apiUrl = `${baseApiUrl}product/getProduct`;
+  const addProductUrl = `${baseApiUrl}product/addProduct`;
+  const updateProductUrl = `${baseApiUrl}Product/updateProduct`;
+  const deleteProductUrl = `${baseApiUrl}Product/deleteProduct`;
+  const subCategoriesUrl = `${baseApiUrl}sub_category/getSubcategory`;
 
   const [data, setData] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     product_name: "",
     product_mrp: "",
-    sub_category_name: "",
+    sub_category_id: "",
+    disable_mrp: true,
   });
   const [editedProduct, setEditedProduct] = useState({
     id: null,
     product_name: "",
     product_mrp: "",
-    sub_category_name: "",
+    sub_category_id: "",
+    disable_mrp: true,
   });
 
   const fetchData = async () => {
@@ -27,7 +32,9 @@ function Product() {
       const response = await fetch(apiUrl);
       if (response.ok) {
         const responseData = await response.json();
-        const receivedData = Array.isArray(responseData) ? responseData : responseData.data;
+        const receivedData = Array.isArray(responseData)
+          ? responseData
+          : responseData.data;
         setData(receivedData);
       }
     } catch (error) {
@@ -35,8 +42,35 @@ function Product() {
     }
   };
 
-  const handleEditClick = (id, product_name, product_mrp, sub_category_name) => {
-    setEditedProduct({ id, product_name, product_mrp, sub_category_name });
+  const fetchSubCategories = async () => {
+    try {
+      const response = await fetch(subCategoriesUrl);
+      if (response.ok) {
+        const responseData = await response.json();
+        const receivedData = Array.isArray(responseData)
+          ? responseData
+          : responseData.data;
+        setSubCategories(receivedData);
+      }
+    } catch (error) {
+      console.error("Error fetching sub-categories:", error);
+    }
+  };
+
+  const handleEditClick = (
+    id,
+    product_name,
+    product_mrp,
+    sub_category_id,
+    disable_mrp
+  ) => {
+    setEditedProduct({
+      id,
+      product_name,
+      product_mrp,
+      sub_category_id,
+      disable_mrp,
+    });
   };
 
   const handleEditProductName = (e) => {
@@ -58,7 +92,8 @@ function Product() {
           id: editedProduct.id,
           product_name: editedProduct.product_name,
           product_mrp: editedProduct.product_mrp,
-          sub_category_name: editedProduct.sub_category_name,
+          sub_category_id: editedProduct.sub_category_id,
+          disable_mrp: editedProduct.disable_mrp,
         }),
       });
 
@@ -69,7 +104,8 @@ function Product() {
               ...product,
               product_name: editedProduct.product_name,
               product_mrp: editedProduct.product_mrp,
-              sub_category_name: editedProduct.sub_category_name,
+              sub_category_id: editedProduct.sub_category_id,
+              disable_mrp: editedProduct.disable_mrp,
             };
           }
           return product;
@@ -79,10 +115,15 @@ function Product() {
           id: null,
           product_name: "",
           product_mrp: "",
-          sub_category_name: "",
+          sub_category_id: "",
+          disable_mrp: true,
         });
+        fetchData(); // Fetch updated data after saving
       } else {
-        console.error("Failed to update Product. Response status:", response.status);
+        console.error(
+          "Failed to update Product. Response status:",
+          response.status
+        );
         console.error("Response text:", await response.text());
       }
     } catch (error) {
@@ -103,7 +144,10 @@ function Product() {
       if (response.ok) {
         setData(data.filter((product) => product.id !== id));
       } else {
-        console.error("Failed to delete Product. Response status:", response.status);
+        console.error(
+          "Failed to delete Product. Response status:",
+          response.status
+        );
         console.error("Response text:", await response.text());
       }
     } catch (error) {
@@ -120,7 +164,8 @@ function Product() {
     setNewProduct({
       product_name: "",
       product_mrp: "",
-      sub_category_name: "",
+      sub_category_id: "",
+      disable_mrp: true,
     });
   };
 
@@ -134,7 +179,8 @@ function Product() {
         body: JSON.stringify({
           product_name: newProduct.product_name,
           product_mrp: newProduct.product_mrp,
-          sub_category_name: newProduct.sub_category_name,
+          sub_category_id: newProduct.sub_category_id,
+          disable_mrp: newProduct.disable_mrp,
         }),
       });
 
@@ -142,8 +188,13 @@ function Product() {
         const addedProduct = await response.json();
         setData([...data, addedProduct]);
         handleCancelAddProduct(); // Close the form only after a successful response
+        fetchData(); // Fetch updated data after saving
       } else {
-        console.error("Failed to add Product");
+        console.error(
+          "Failed to add Product. Response status:",
+          response.status
+        );
+        console.error("Response text:", await response.text());
       }
     } catch (error) {
       console.error("Error adding Product:", error);
@@ -152,10 +203,12 @@ function Product() {
 
   useEffect(() => {
     fetchData();
+    fetchSubCategories();
   }, []);
 
   return (
     <div className="Product-container">
+      <h1>Product</h1>
       <button className="add-Product" onClick={handleAddProductClick}>
         Add Product
       </button>
@@ -163,45 +216,78 @@ function Product() {
         <div className="popup">
           <div className="add-Product-form">
             <h2>Add New Product</h2>
+            <select
+              className="input-field"
+              value={newProduct.sub_category_id}
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  sub_category_id: e.target.value,
+                })
+              }
+            >
+              <option value="" disabled>
+                Select Sub-Category
+              </option>
+              {subCategories.map((subCategory) => (
+                <option key={subCategory.id} value={subCategory.id}>
+                  {subCategory.name}
+                </option>
+              ))}
+            </select>
             <input
               type="text"
               className="input-field"
               placeholder="Product Name"
               value={newProduct.product_name}
-              onChange={(e) => setNewProduct({ ...newProduct, product_name: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, product_name: e.target.value })
+              }
             />
             <input
               type="text"
               className="input-field"
               placeholder="Product MRP"
               value={newProduct.product_mrp}
-              onChange={(e) => setNewProduct({ ...newProduct, product_mrp: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, product_mrp: e.target.value })
+              }
             />
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Sub Category Name"
-              value={newProduct.sub_category_name}
-              onChange={(e) => setNewProduct({ ...newProduct, sub_category_name: e.target.value })}
-            />
+            <label>
+              Disable MRP:
+              <input
+                type="checkbox"
+                checked={newProduct.disable_mrp}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    disable_mrp: e.target.checked,
+                  })
+                }
+              />
+            </label>
             <div className="form-buttons">
               <button className="save-button" onClick={handleSaveProduct}>
                 Save
               </button>
-              <button className="cancel-button" onClick={handleCancelAddProduct}>
+              <button
+                className="cancel-button"
+                onClick={handleCancelAddProduct}
+              >
                 Cancel
               </button>
             </div>
           </div>
         </div>
       )}
+
       <div className="Product-list">
         {data.map((dataObj) => (
           <div className="Product-item" key={dataObj.id}>
-            <div className="Product-details">
+            <div>
               <p className="Product-name">{dataObj.product_name}</p>
               <p className="Product-mrp">{dataObj.product_mrp}</p>
-              <p className="Sub-category-name">{dataObj.sub_category_name}</p>
+              {/* Remove the "Sub-category-id" and "Disable-mrp" information */}
             </div>
             {editedProduct.id === dataObj.id ? (
               <EditProductPopup
@@ -218,7 +304,8 @@ function Product() {
                       dataObj.id,
                       dataObj.product_name,
                       dataObj.product_mrp,
-                      dataObj.sub_category_name
+                      dataObj.sub_category_id,
+                      dataObj.disable_mrp
                     )
                   }
                 >

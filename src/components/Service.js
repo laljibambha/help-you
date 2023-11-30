@@ -4,12 +4,13 @@ import "./ServiceForm.css";
 import EditServicePopup from "./EditServicePopup";
 
 function Service() {
-  const url = "http://192.168.1.40:8000/service/getService";
-  const addServiceUrl = "http://192.168.1.40:8000/service/upload";
-  const updateServiceUrl = "http://192.168.1.40:8000/service/updateService";
-  const deleteServiceUrl = "http://192.168.1.40:8000/service/deleteService";
-  const updateServiceImageUrl = "http://192.168.1.40:8000/service/updateServiceImage";
-  
+  const baseApiUrl = "http://192.168.1.40:8000/";
+  const url = `${baseApiUrl}service/getService`;
+  const addServiceUrl = `${baseApiUrl}service/upload`;
+  const updateServiceUrl = `${baseApiUrl}service/updateService`;
+  const deleteServiceUrl = `${baseApiUrl}service/deleteService`;
+  const updateServiceImageUrl = `${baseApiUrl}service/updateServiceImage`;
+
   const [data, setData] = useState([]);
   const [showAddServiceForm, setShowAddServiceForm] = useState(false);
   const [newService, setNewService] = useState({
@@ -29,15 +30,15 @@ function Service() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
 
   const handleEditClick = (id, name) => {
     setEditedService({ id, name });
-  }
+  };
 
   const handleEditServiceName = (e) => {
     setEditedService({ ...editedService, name: e.target.value });
-  }
+  };
 
   const handleSaveEditedService = async () => {
     if (editedService.id === null) {
@@ -54,7 +55,7 @@ function Service() {
       });
 
       if (response.ok) {
-        const updatedData = data.map(service => {
+        const updatedData = data.map((service) => {
           if (service.id === editedService.id) {
             return { ...service, name: editedService.name };
           }
@@ -69,7 +70,7 @@ function Service() {
     } catch (error) {
       console.error("Error updating service:", error);
     }
-  }
+  };
 
   const handleEditServiceImage = async (file) => {
     if (editedService.id === null) {
@@ -95,7 +96,11 @@ function Service() {
     } catch (error) {
       console.error("Error updating service image:", error);
     }
-  }
+  };
+
+  const handleCancelEdit = () => {
+    setEditedService({ id: null, name: "" });
+  };
 
   const handleRemoveClick = async (id) => {
     try {
@@ -108,7 +113,7 @@ function Service() {
       });
 
       if (response.ok) {
-        setData(data.filter(service => service.id !== id));
+        setData(data.filter((service) => service.id !== id));
       } else {
         console.error("Failed to delete service. Response status:", response.status);
         console.error("Response text:", await response.text());
@@ -116,11 +121,12 @@ function Service() {
     } catch (error) {
       console.error("Error removing service:", error);
     }
-  }
+  };
 
   const handleAddServiceClick = () => {
     setShowAddServiceForm(true);
-  }
+  };
+  
 
   const handleCancelAddService = () => {
     setShowAddServiceForm(false);
@@ -129,7 +135,7 @@ function Service() {
       image: null,
     });
     setImagePreview(null);
-  }
+  };
 
   const handleSaveService = async () => {
     try {
@@ -152,7 +158,7 @@ function Service() {
     } catch (error) {
       console.error("Error adding service:", error);
     }
-  }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -164,7 +170,7 @@ function Service() {
     } else {
       setImagePreview(null);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -172,6 +178,7 @@ function Service() {
 
   return (
     <div className="Service">
+      <h1>Service</h1>
       <button className="add-service" onClick={handleAddServiceClick}>
         Add Service
       </button>
@@ -222,9 +229,12 @@ function Service() {
               handleEditServiceName={handleEditServiceName}
               handleSaveEditedService={handleSaveEditedService}
               handleEditServiceImage={handleEditServiceImage}
+              handleCancelEdit={handleCancelEdit}
             />
           ) : (
-            <p className="service-name">{dataObj.name}</p>
+            <div key={`service-info-${dataObj.id}`}>
+              <p className="service-name">{dataObj.name}</p>
+            </div>
           )}
           <button className="service-edit" onClick={() => handleEditClick(dataObj.id, dataObj.name)}>
             Edit

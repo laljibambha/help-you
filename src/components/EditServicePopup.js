@@ -5,7 +5,8 @@ function EditServicePopup({
   editedService,
   handleEditServiceName,
   handleSaveEditedService,
-  handleEditServiceImage, // New function for image update
+  handleEditServiceImage,
+  handleCancelEdit, // New function for cancel
 }) {
   return (
     <div className="edit-service-popup">
@@ -21,12 +22,15 @@ function EditServicePopup({
           type="file"
           accept=".jpg, .jpeg, .png"
           className="input-field"
-          onChange={(e) => handleEditServiceImage(e.target.files[0])} // Pass the selected file to handleEditServiceImage
+          onChange={(e) => handleEditServiceImage(e.target.files[0])}
         />
 
         <div className="button-container">
           <button className="save-button" onClick={handleSaveEditedService}>
             Save
+          </button>
+          <button className="cancel-button" onClick={handleCancelEdit}>
+            Cancel
           </button>
         </div>
       </div>

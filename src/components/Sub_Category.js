@@ -1,51 +1,55 @@
-// SubCategory.js
-
 import React, { useState, useEffect } from "react";
 import "./Sub_Category.css";
 import "./Sub_CategoryForm.css";
-import EditSub_CategoryPopup from "./EditSub_CategoryPopup";
+import EditSubCategoryPopup from "./EditSubCategoryPopup";
 
 function SubCategory() {
   const apiUrl = "http://192.168.1.40:8000/sub_category/getSubcategory";
   const addSubCategoryUrl = "http://192.168.1.40:8000/sub_category/upload";
-  const updateSubCategoryUrl = "http://192.168.1.40:8000/sub_category/updatesub_category";
-  const deleteSubCategoryUrl = "http://192.168.1.40:8000/sub_category/deletesub_category";
-  const updateSubCategoryImageUrl = "http://192.168.1.40:8000/sub_category/updatesub_categoryImage";
+  const updateSubCategoryUrl =
+    "http://192.168.1.40:8000/sub_category/updateSubcategory";
+  const deleteSubCategoryUrl =
+    "http://192.168.1.40:8000/sub_category/deletesub_category";
+  const updateSubCategoryImageUrl =
+    "http://192.168.1.40:8000/sub_category/updatesub_categoryImage";
+  const categoriesUrl = "http://192.168.1.40:8000/category/getCategory";
 
   const [data, setData] = useState([]);
   const [showAddSubCategoryForm, setShowAddSubCategoryForm] = useState(false);
   const [newSubCategory, setNewSubCategory] = useState({
     name: "",
     image: null,
+    categoryId: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
-  const [editedSubCategory, setEditedSubCategory] = useState({ id: null, name: "" });
-  const [services, setServices] = useState([]);
-  const [selectedService, setSelectedService] = useState("");
+  const [editedSubCategory, setEditedSubCategory] = useState({
+    id: null,
+    name: "",
+  });
+  const [categories, setCategories] = useState([]);
 
-  const fetchData = async () => {
+  const fetchData = async (url, setter) => {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(url);
       if (response.ok) {
         const responseData = await response.json();
-
-        // Assuming the API response is an array or an object with a property containing the array
-        const receivedData = Array.isArray(responseData) ? responseData : responseData.data;
-
-        setData(receivedData);
+        const receivedData = Array.isArray(responseData)
+          ? responseData
+          : responseData.data;
+        setter(receivedData);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(`Error fetching data from ${url}:`, error);
     }
   };
 
   const handleEditClick = (id, name) => {
     setEditedSubCategory({ id, name });
-  }
+  };
 
   const handleEditSubCategoryName = (e) => {
     setEditedSubCategory({ ...editedSubCategory, name: e.target.value });
-  }
+  };
 
   const handleSaveEditedSubCategory = async () => {
     if (editedSubCategory.id === null) {
@@ -58,11 +62,14 @@ function SubCategory() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: editedSubCategory.id, name: editedSubCategory.name }),
+        body: JSON.stringify({
+          id: editedSubCategory.id,
+          name: editedSubCategory.name,
+        }),
       });
 
       if (response.ok) {
-        const updatedData = data.map(subCategory => {
+        const updatedData = data.map((subCategory) => {
           if (subCategory.id === editedSubCategory.id) {
             return { ...subCategory, name: editedSubCategory.name };
           }
@@ -71,13 +78,16 @@ function SubCategory() {
         setData(updatedData);
         setEditedSubCategory({ id: null, name: "" });
       } else {
-        console.error("Failed to update SubCategory. Response status:", response.status);
+        console.error(
+          "Failed to update SubCategory. Response status:",
+          response.status
+        );
         console.error("Response text:", await response.text());
       }
     } catch (error) {
       console.error("Error updating SubCategory:", error);
     }
-  }
+  };
 
   const handleEditSubCategoryImage = async (file) => {
     if (editedSubCategory.id === null) {
@@ -97,13 +107,16 @@ function SubCategory() {
       if (response.ok) {
         console.log("SubCategory image updated successfully.");
       } else {
-        console.error("Failed to update SubCategory image. Response status:", response.status);
+        console.error(
+          "Failed to update SubCategory image. Response status:",
+          response.status
+        );
         console.error("Response text:", await response.text());
       }
     } catch (error) {
       console.error("Error updating SubCategory image:", error);
     }
-  }
+  };
 
   const handleRemoveClick = async (id) => {
     try {
@@ -116,36 +129,37 @@ function SubCategory() {
       });
 
       if (response.ok) {
-        setData(data.filter(subCategory => subCategory.id !== id));
+        setData(data.filter((subCategory) => subCategory.id !== id));
       } else {
-        console.error("Failed to delete SubCategory. Response status:", response.status);
+        console.error(
+          "Failed to delete SubCategory. Response status:",
+          response.status
+        );
         console.error("Response text:", await response.text());
       }
     } catch (error) {
       console.error("Error removing SubCategory:", error);
     }
-  }
+  };
 
   const handleAddSubCategoryClick = () => {
     setShowAddSubCategoryForm(true);
-  }
+  };
 
-  const handleCancelAddSubCategory = () => {
+  const handleCancelEdit = () => {
     setShowAddSubCategoryForm(false);
-    setNewSubCategory({
+    setEditedSubCategory({
+      id: null,
       name: "",
-      image: null,
     });
-    setImagePreview(null);
-    setSelectedService("");
-  }
+  };
 
   const handleSaveSubCategory = async () => {
     try {
       const formData = new FormData();
       formData.append("name", newSubCategory.name);
       formData.append("image", newSubCategory.image);
-      formData.append("service", selectedService);
+      formData.append("category_id", newSubCategory.categoryId);
 
       const response = await fetch(addSubCategoryUrl, {
         method: "POST",
@@ -155,14 +169,14 @@ function SubCategory() {
       if (response.ok) {
         const addedSubCategory = await response.json();
         setData([...data, addedSubCategory]);
-        handleCancelAddSubCategory(); // Close the form only after a successful response
+        handleCancelEdit(); // Close the form only after a successful response
       } else {
         console.error("Failed to add SubCategory");
       }
     } catch (error) {
       console.error("Error adding SubCategory:", error);
     }
-  }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -174,37 +188,46 @@ function SubCategory() {
     } else {
       setImagePreview(null);
     }
-  }
-
-  const fetchServices = async () => {
-    const servicesUrl = "http://192.168.1.40:8000/service/getService";
-
-    try {
-      const response = await fetch(servicesUrl);
-      if (response.ok) {
-        const servicesData = await response.json();
-        setServices(servicesData);
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
   };
 
   useEffect(() => {
-    fetchData();
-    fetchServices();
+    fetchData(apiUrl, setData);
+    fetchData(categoriesUrl, setCategories);
   }, []);
 
   return (
     <div className="sub-category-container">
-    <div className="sub-category">
-      <button className="add-sub-category" onClick={handleAddSubCategoryClick}>
-        Add SubCategory
-      </button>
+      <h1>SubCategory</h1>
+      <div className="sub-category">
+        <button
+          className="add-sub-category"
+          onClick={handleAddSubCategoryClick}
+        >
+          Add SubCategory
+        </button>
         {showAddSubCategoryForm && (
           <div className="popup">
             <div className="add-sub-category-form">
               <h2>Add New SubCategory</h2>
+              <select
+                className="input-field"
+                value={newSubCategory.categoryId}
+                onChange={(e) =>
+                  setNewSubCategory({
+                    ...newSubCategory,
+                    categoryId: e.target.value,
+                  })
+                }
+              >
+                <option value="" disabled>
+                  Select Category
+                </option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
               <input
                 type="text"
                 className="input-field"
@@ -221,27 +244,19 @@ function SubCategory() {
                 onChange={handleImageChange}
               />
               {imagePreview && (
-                <img src={imagePreview} alt="Selected" className="image-preview" />
+                <img
+                  src={imagePreview}
+                  alt="Selected"
+                  className="image-preview"
+                />
               )}
-              <select
-                className="input-field"
-                value={selectedService}
-                onChange={(e) => setSelectedService(e.target.value)}
-              >
-                <option value="" disabled>Select Service</option>
-                {services.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.name}
-                  </option>
-                ))}
-              </select>
               <div className="form-buttons">
                 <button className="save-button" onClick={handleSaveSubCategory}>
                   Save
                 </button>
                 <button
                   className="cancel-button"
-                  onClick={handleCancelAddSubCategory}
+                  onClick={handleCancelEdit}
                 >
                   Cancel
                 </button>
@@ -249,28 +264,42 @@ function SubCategory() {
             </div>
           </div>
         )}
-       {data.map((dataObj) => (
+        {data.map((dataObj) => (
           <div className="sub-category-item" key={dataObj.id}>
             <div className="sub-category-image">
-              <img src={`http://192.168.1.40:8000/images/${dataObj.image}`} alt={dataObj.name} />
+              {dataObj.image && (
+                <img
+                  src={`http://192.168.1.40:8000/images/${dataObj.image}`}
+                  alt={dataObj.name}
+                />
+              )}
             </div>
             {editedSubCategory.id === dataObj.id ? (
-              <EditSub_CategoryPopup
+              <EditSubCategoryPopup
                 editedSubCategory={editedSubCategory}
                 handleEditSubCategoryName={handleEditSubCategoryName}
                 handleSaveEditedSubCategory={handleSaveEditedSubCategory}
                 handleEditSubCategoryImage={handleEditSubCategoryImage}
+                handleCancelEdit={handleCancelEdit} // Rename function
               />
             ) : (
               <div>
                 <p className="sub-category-name">{dataObj.name}</p>
-                <p className="category-name">Category: {dataObj.category_name}</p>
+                <p className="category-name">
+                  Category: {dataObj.category_name}
+                </p>
               </div>
             )}
-            <button className="sub-category-edit" onClick={() => handleEditClick(dataObj.id, dataObj.name)}>
+            <button
+              className="sub-category-edit"
+              onClick={() => handleEditClick(dataObj.id, dataObj.name)}
+            >
               Edit
             </button>
-            <button className="sub-category-remove" onClick={() => handleRemoveClick(dataObj.id)}>
+            <button
+              className="sub-category-remove"
+              onClick={() => handleRemoveClick(dataObj.id)}
+            >
               Remove
             </button>
           </div>
