@@ -66,7 +66,7 @@ function User() {
           <table className="user-table">
             <thead>
               <tr>
-                <th>Id</th>
+                {/* <th>Id</th> */}
                 <th>Image</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -78,7 +78,7 @@ function User() {
             <tbody>
               {userData.map((row) => (
                 <tr key={row.id}>
-                  <td>{row.id}</td>
+                  {/* <td>{row.id}</td> */}
                   <td className="user-image">
                     {row.image_url ? (
                       <img

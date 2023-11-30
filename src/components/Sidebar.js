@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { FaHome, FaUser } from "react-icons/fa";
-import { BiSolidCategory } from "react-icons/bi";
+import { BiSolidCategory, BiLogoProductHunt } from "react-icons/bi";
 import { PiArrowElbowDownRightBold } from "react-icons/pi";
 import {
   MdProductionQuantityLimits,
@@ -29,12 +29,6 @@ function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/home/user">
-            <FaUser className="icon" />
-            User
-          </Link>
-        </li>
-        <li>
           <Link to="/home/category">
             <BiSolidCategory className="icon" />
             Category
@@ -48,7 +42,7 @@ function Sidebar() {
         </li>
         <li>
           <Link to="/home/product">
-            <MdProductionQuantityLimits className="icon" />
+            <BiLogoProductHunt className="icon" />
             Product
           </Link>
         </li>
@@ -56,6 +50,12 @@ function Sidebar() {
           <Link to="/home/order">
             <MdProductionQuantityLimits className="icon" />
             Order
+          </Link>
+        </li>
+        <li>
+          <Link to="/home/user">
+            <FaUser className="icon" />
+            User
           </Link>
         </li>
         <li>
