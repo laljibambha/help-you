@@ -1,44 +1,59 @@
 /* Help.css */
 
 .help-container {
-    width: 1000px;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1000px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.help-table th,
+.help-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.help-table th {
+  background-color: #f2f2f2;
+}
+
+.help-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.help-table tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
+/* Media query for screens smaller than 600px */
+@media screen and (max-width: 600px) {
+  .help-container {
+      width: 90%;
+      max-width: none;
   }
-  
+
   h2 {
-    color: #333;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+      font-size: 1.2rem;
   }
-  
-  .help-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
+
   .help-table th,
   .help-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
+      padding: 8px;
   }
-  
-  .help-table th {
-    background-color: #f2f2f2;
-  }
-  
-  /* Style for alternating row colors */
-  .help-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .help-table tbody tr:hover {
-    background-color: #e0e0e0;
-  }
-  
+}
