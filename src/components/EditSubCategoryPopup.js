@@ -22,7 +22,7 @@ function EditSubCategoryPopup({
           className="input-field"
           value={editedSubCategory.name}
           onChange={handleEditSubCategoryName}
-        />
+        /> 
         <input
           type="file"
           accept=".jpg, .jpeg, .png"

@@ -9,7 +9,7 @@ import {
   MdProductionQuantityLimits,
   MdHomeRepairService,
 } from "react-icons/md";
-import "./Sidebar.css";
+import "./Sidebar.css"; 
 
 function Sidebar() {
   return (

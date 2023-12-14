@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./Order.css";
 
 function Order() {
-  const orderApiUrl = "http://192.168.1.40:8000/order/GetOrders";
+  const orderApiUrl = "http://helpyouservice.in:4005/order/GetOrders";
 
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);

@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
 }
-
+ 
 .sub-category {
   display: flex;
   flex-wrap: wrap;

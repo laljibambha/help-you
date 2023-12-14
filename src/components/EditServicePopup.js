@@ -7,7 +7,7 @@ function EditServicePopup({
   handleSaveEditedService,
   handleEditServiceImage,
   handleCancelEdit, // New function for cancel
-}) {
+}) { 
   return (
     <div className="edit-service-popup">
       <div className="popup-content">

@@ -10,7 +10,7 @@
   padding: 1px 0; /* Reduced padding for space */
   height: 50px; /* Allow the height to adjust based on content */
 }
-
+ 
 .footer-content {
   display: flex;
   flex-direction: column;

@@ -1,7 +1,7 @@
 import React from "react";
 import "./EditCategoryPopup.css";
 
-function EditCategoryPopup({
+function EditCategoryPopup({ 
   editedCategory,
   handleEditCategoryName,
   handleSaveEditedCategory,

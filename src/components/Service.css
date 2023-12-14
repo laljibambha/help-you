@@ -1,4 +1,13 @@
-.Service {
+.service-h1 {
+  text-align: center;
+  font-family: 'Nunito Sans', sans-serif;
+  color: #363838;
+  font-size: 33px;
+  margin-bottom: -30px;
+  color: red;
+}
+
+.service {
   display: flex;
   flex-direction: column;
 }
@@ -37,7 +46,7 @@
   margin-bottom: 0px;
   text-align: center;
 }
-.add-service {
+.add-service-button {
   box-sizing: border-box;
   appearance: none;
   background-color: transparent;
@@ -46,7 +55,7 @@
   color: #fff;
   background-color: #0a0101;
   padding: 3px 10px;
-  width: 90px;
+  width: 88px;
   margin-bottom: 0px;
   text-align: center;
   position: relative; /* Change to fixed position */

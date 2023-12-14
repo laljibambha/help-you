@@ -4,15 +4,15 @@ import "./Sub_CategoryForm.css";
 import EditSubCategoryPopup from "./EditSubCategoryPopup";
 
 function SubCategory() {
-  const apiUrl = "http://192.168.1.40:8000/sub_category/getSubcategory";
-  const addSubCategoryUrl = "http://192.168.1.40:8000/sub_category/upload";
+  const apiUrl = "http://helpyouservice.in:4005/sub_category/getSubcategory";
+  const addSubCategoryUrl = "http://helpyouservice.in:4005/sub_category/upload";
   const updateSubCategoryUrl =
-    "http://192.168.1.40:8000/sub_category/updateSubcategory";
+    "http://helpyouservice.in:4005/sub_category/updateSubcategory";
   const deleteSubCategoryUrl =
-    "http://192.168.1.40:8000/sub_category/deletesub_category";
+    "http://helpyouservice.in:4005/sub_category/deletesub_category";
   const updateSubCategoryImageUrl =
-    "http://192.168.1.40:8000/sub_category/updatesub_categoryImage";
-  const categoriesUrl = "http://192.168.1.40:8000/category/getCategory";
+    "http://helpyouservice.in:4005/sub_category/updatesub_categoryImage";
+  const categoriesUrl = "http://helpyouservice.in:4005/category/getCategory";
 
   const [data, setData] = useState([]);
   const [showAddSubCategoryForm, setShowAddSubCategoryForm] = useState(false);
@@ -130,9 +130,10 @@ function SubCategory() {
 
       if (response.ok) {
         setData(data.filter((subCategory) => subCategory.id !== id));
+        console.log(`Subcategory with id ${id} removed successfully.`);
       } else {
         console.error(
-          "Failed to delete SubCategory. Response status:",
+          `Failed to delete SubCategory with id ${id}. Response status:`,
           response.status
         );
         console.error("Response text:", await response.text());
@@ -269,7 +270,7 @@ function SubCategory() {
             <div className="sub-category-image">
               {dataObj.image && (
                 <img
-                  src={`http://192.168.1.40:8000/images/${dataObj.image}`}
+                  src={`http://helpyouservice.in:4005/images/${dataObj.image}`}
                   alt={dataObj.name}
                 />
               )}

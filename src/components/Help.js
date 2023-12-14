@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./Help.css"; // Import your CSS file
 
 function Help() {
-  const apiUrl = "http://192.168.1.40:8000/help/getHelp";
+  const apiUrl = "http://helpyouservice.in:4005/help/getHelp";
   const [helpData, setHelpData] = useState([]);
 
   useEffect(() => {

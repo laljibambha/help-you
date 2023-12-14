@@ -4,7 +4,7 @@ import "./ServiceForm.css";
 import EditServicePopup from "./EditServicePopup";
 
 function Service() {
-  const baseApiUrl = "http://192.168.1.40:8000/";
+  const baseApiUrl = "http://helpyouservice.in:4005/";
   const url = `${baseApiUrl}service/getService`;
   const addServiceUrl = `${baseApiUrl}service/upload`;
   const updateServiceUrl = `${baseApiUrl}service/updateService`;
@@ -176,16 +176,16 @@ function Service() {
     fetchData();
   }, []);
 
-  return (
-    <div className="Service">
-      <h1>Service</h1>
-      <button className="add-service" onClick={handleAddServiceClick}>
+  return ( 
+    <div className="service">
+      <h1 className="service-h1">Service</h1>
+      <button className="add-service-button" onClick={handleAddServiceClick}>
         Add Service
       </button>
       {showAddServiceForm && (
         <div className="popup">
           <div className="add-service-form">
-            <h2>Add New Service</h2>
+            <h2 className="add-service-form-h2">Add New Service</h2>
             <input
               type="text"
               className="input-field"
@@ -221,7 +221,7 @@ function Service() {
       {data.map((dataObj) => (
         <div className="service-item" key={dataObj.id}>
           <div className="service-image">
-            <img src={"http://192.168.1.40:8000/images/" + dataObj.image} alt={dataObj.name} />
+            <img src={"http://helpyouservice.in:4005/images/" + dataObj.image} alt={dataObj.name} />
           </div>
           {editedService.id === dataObj.id ? (
             <EditServicePopup

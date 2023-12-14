@@ -3,7 +3,7 @@ import "./Product.css";
 import EditProductPopup from "./EditProductPopup";
 
 function Product() {
-  const baseApiUrl = "http://192.168.1.40:8000/";
+  const baseApiUrl = "http://helpyouservice.in:4005/";
   const apiUrl = `${baseApiUrl}product/getProduct`;
   const addProductUrl = `${baseApiUrl}product/addProduct`;
   const updateProductUrl = `${baseApiUrl}Product/updateProduct`;
@@ -291,10 +291,20 @@ function Product() {
             </div>
             {editedProduct.id === dataObj.id ? (
               <EditProductPopup
-                editedProduct={editedProduct}
-                handleEditProductName={handleEditProductName}
-                handleSaveEditedProduct={handleSaveEditedProduct}
-              />
+              editedProduct={editedProduct}
+              handleEditProductName={handleEditProductName}
+              handleEditProductMRP={(e) =>
+                setEditedProduct({ ...editedProduct, product_mrp: e.target.value })
+              }
+              handleSaveEditedProduct={handleSaveEditedProduct}
+              handleCancelEdit={() => setEditedProduct({
+                id: null,
+                product_name: "",
+                product_mrp: "",
+                sub_category_id: "",
+                disable_mrp: true,
+              })}
+            />
             ) : (
               <div className="Product-actions">
                 <button

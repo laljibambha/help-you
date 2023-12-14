@@ -22,7 +22,7 @@ function EditSub_CategoryPopup({
           accept=".jpg, .jpeg, .png"
           className="input-field"
           onChange={(e) => handleEditSubCategoryImage(e.target.files[0])} // Pass the selected file to handleEditSubCategoryImage
-        />
+        /> 
 
         <div className="button-container">
           <button className="save-button" onClick={handleSaveEditedSubCategory}>

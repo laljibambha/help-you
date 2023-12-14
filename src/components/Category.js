@@ -4,11 +4,11 @@ import "./CategoryForm.css";
 import EditCategoryPopup from "./EditCategoryPopup";
 
 function Category() {
-  const apiUrl = "http://192.168.1.40:8000/category/getCategory";
-  const updateCategoryUrl = "http://192.168.1.40:8000/Category/updateCategory";
-  const deleteCategoryUrl = "http://192.168.1.40:8000/Category/deleteCategory";
+  const apiUrl = "http://helpyouservice.in:4005/category/getCategory";
+  const updateCategoryUrl = "http://helpyouservice.in:4005/Category/updateCategory";
+  const deleteCategoryUrl = "http://helpyouservice.in:4005/Category/deleteCategory";
   const updateCategoryImageUrl =
-    "http://192.168.1.40:8000/Category/updateCategoryImage";
+    "http://helpyouservice.in:4005/Category/updateCategoryImage";
 
   const [data, setData] = useState([]);
   const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
@@ -159,7 +159,7 @@ function Category() {
       formData.append("image", newCategory.image);
       formData.append("service_id", selectedService); // Use the selected service ID
 
-      const response = await fetch("http://192.168.1.40:8000/category/upload", {
+      const response = await fetch("http://helpyouservice.in:4005/category/upload", {
         method: "POST",
         body: formData,
       });
@@ -196,7 +196,7 @@ function Category() {
   };
 
   const fetchServices = async () => {
-    const servicesUrl = "http://192.168.1.40:8000/service/getService";
+    const servicesUrl = "http://helpyouservice.in:4005/service/getService";
 
     try {
       const response = await fetch(servicesUrl);
@@ -279,7 +279,7 @@ function Category() {
           <div className="Category-item" key={dataObj.id}>
             <div className="Category-image">
               <img
-                src={`http://192.168.1.40:8000/images/${
+                src={`http://helpyouservice.in:4005/images/${
                   dataObj.image || "default-image.jpg"
                 }`}
                 alt={dataObj.name}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./User.css";
 
 function User() {
-  const baseApiUrl = "http://192.168.1.40:8000/";
+  const baseApiUrl = "http://helpyouservice.in:4005/";
   const [page, setPage] = useState(1);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
