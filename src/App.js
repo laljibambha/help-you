@@ -7,7 +7,7 @@ import Service from "./components/Service";
 import User from "./components/User";
 import Category from "./components/Category";
 import "./App.css";
-import Sub_Category from "./components/Sub_Category";
+import SubCategory from "./components/Sub_Category";
 import Product from "./components/Product";
 import Order from "./components/Order";
 import Help from "./components/Help"; 
@@ -34,6 +34,7 @@ function App() {
   }, []);
 
   return (
+    
     <Router>
       <div className={`app ${theme}`}>
         <Routes>
@@ -47,7 +48,7 @@ function App() {
             <Route path="service" element={<Service />} />
             <Route path="user" element={<User />} />
             <Route path="category" element={<Category />} />
-            <Route path="sub_category" element={<Sub_Category />} />
+            <Route path="sub_category" element={<SubCategory />} />
             <Route path="product" element={<Product />} />
             <Route path="order" element={<Order />} />
             <Route path="help" element={<Help />} />

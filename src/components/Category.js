@@ -299,6 +299,7 @@ function Category() {
                 <p className="Service-name">Service: {dataObj.service_name}</p>
               </div>
             )}
+            <div>
             <button
               className="Category-edit"
               onClick={() => handleEditClick(dataObj.id, dataObj.name)}
@@ -311,6 +312,7 @@ function Category() {
             >
               Remove
             </button>
+            </div>
           </div>
         ))}
       </div>

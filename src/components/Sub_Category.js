@@ -291,6 +291,7 @@ function SubCategory() {
                 </p>
               </div>
             )}
+            <div>
             <button
               className="sub-category-edit"
               onClick={() => handleEditClick(dataObj.id, dataObj.name)}
@@ -303,6 +304,7 @@ function SubCategory() {
             >
               Remove
             </button>
+            </div>
           </div>
         ))}
       </div>

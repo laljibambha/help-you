@@ -20,6 +20,7 @@ function Service() {
   const [imagePreview, setImagePreview] = useState(null);
   const [editedService, setEditedService] = useState({ id: null, name: "" });
 
+  
   const fetchData = async () => {
     try {
       const response = await fetch(url);
@@ -31,6 +32,8 @@ function Service() {
       console.error("Error fetching data:", error);
     }
   };
+
+  
 
   const handleEditClick = (id, name) => {
     setEditedService({ id, name });
@@ -174,7 +177,7 @@ function Service() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return ( 
     <div className="service">
@@ -236,12 +239,14 @@ function Service() {
               <p className="service-name">{dataObj.name}</p>
             </div>
           )}
+          <div>
           <button className="service-edit" onClick={() => handleEditClick(dataObj.id, dataObj.name)}>
             Edit
           </button>
           <button className="service-remove" onClick={() => handleRemoveClick(dataObj.id)}>
             Remove
           </button>
+          </div>
         </div>
       ))}
     </div>
