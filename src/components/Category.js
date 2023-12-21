@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import ApiUrls from "../APIURL/ApiUrls";
 import "./Category.css";
 import "./CategoryForm.css";
 import EditCategoryPopup from "./EditCategoryPopup";
 
 function Category() {
-  const apiUrl = "http://helpyouservice.in:4005/category/getCategory";
-  const updateCategoryUrl = "http://helpyouservice.in:4005/Category/updateCategory";
-  const deleteCategoryUrl = "http://helpyouservice.in:4005/Category/deleteCategory";
-  const updateCategoryImageUrl =
-    "http://helpyouservice.in:4005/Category/updateCategoryImage";
+  // const baseApiUrl = "http://192.168.1.37:4005/";
+  // const apiUrl = `${baseApiUrl}category/getCategory`;
+  // const updateCategoryUrl = `${baseApiUrl}Category/updateCategory`;
+  // const deleteCategoryUrl = `${baseApiUrl}Category/deleteCategory`;
+  // const updateCategoryImageUrl = `${baseApiUrl}Category/updateCategoryImage`;
 
   const [data, setData] = useState([]);
   const [showAddCategoryForm, setShowAddCategoryForm] = useState(false);
@@ -23,7 +24,7 @@ function Category() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(ApiUrls.GET_CATEGORY);
       if (response.ok) {
         const responseData = await response.json();
 
@@ -53,7 +54,7 @@ function Category() {
     }
 
     try {
-      const response = await fetch(updateCategoryUrl, {
+      const response = await fetch(ApiUrls.UPDATE_CATEGORY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +96,7 @@ function Category() {
       formData.append("id", editedCategory.id);
       formData.append("image", file);
 
-      const response = await fetch(updateCategoryImageUrl, {
+      const response = await fetch(ApiUrls.UPDATE_CATEGORY_IMAGE, {
         method: "POST",
         body: formData,
       });
@@ -116,7 +117,7 @@ function Category() {
 
   const handleRemoveClick = async (id) => {
     try {
-      const response = await fetch(deleteCategoryUrl, {
+      const response = await fetch(ApiUrls.DELETE_CATEGORY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +160,7 @@ function Category() {
       formData.append("image", newCategory.image);
       formData.append("service_id", selectedService); // Use the selected service ID
 
-      const response = await fetch("http://helpyouservice.in:4005/category/upload", {
+      const response = await fetch(`${ApiUrls.ADD_CATEGORY}category/upload`, {
         method: "POST",
         body: formData,
       });
@@ -196,7 +197,7 @@ function Category() {
   };
 
   const fetchServices = async () => {
-    const servicesUrl = "http://helpyouservice.in:4005/service/getService";
+    const servicesUrl = `${ApiUrls.GET_SERVICE}service/getService`;
 
     try {
       const response = await fetch(servicesUrl);
@@ -279,7 +280,7 @@ function Category() {
           <div className="Category-item" key={dataObj.id}>
             <div className="Category-image">
               <img
-                src={`http://helpyouservice.in:4005/images/${
+                src={`${ApiUrls.BASE_URL}images/${
                   dataObj.image || "default-image.jpg"
                 }`}
                 alt={dataObj.name}
@@ -300,18 +301,18 @@ function Category() {
               </div>
             )}
             <div>
-            <button
-              className="Category-edit"
-              onClick={() => handleEditClick(dataObj.id, dataObj.name)}
-            >
-              Edit
-            </button>
-            <button
-              className="Category-remove"
-              onClick={() => handleRemoveClick(dataObj.id)}
-            >
-              Remove
-            </button>
+              <button
+                className="Category-edit"
+                onClick={() => handleEditClick(dataObj.id, dataObj.name)}
+              >
+                Edit
+              </button>
+              <button
+                className="Category-remove"
+                onClick={() => handleRemoveClick(dataObj.id)}
+              >
+                Remove
+              </button>
             </div>
           </div>
         ))}

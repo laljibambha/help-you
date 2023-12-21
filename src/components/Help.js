@@ -1,21 +1,26 @@
 // Help.js
 import React, { useState, useEffect } from "react";
-import "./Help.css"; // Import your CSS file
+import "./Help.css"; 
+import ApiUrls from "../APIURL/ApiUrls";
 
 function Help() {
-  const apiUrl = "http://helpyouservice.in:4005/help/getHelp";
+  // const baseApiUrl = "http://192.168.1.37:4005/";
+  // const apiUrl = `${baseApiUrl}help/getHelp`;
   const [helpData, setHelpData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(ApiUrls.GET_HELP);
 
         if (response.ok) {
           const responseData = await response.json();
           setHelpData(responseData);
         } else {
-          console.error("Failed to fetch help data. Response status:", response.status);
+          console.error(
+            "Failed to fetch help data. Response status:",
+            response.status
+          );
           console.error("Response text:", await response.text());
         }
       } catch (error) {

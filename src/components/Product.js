@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Product.css";
 import EditProductPopup from "./EditProductPopup";
+import ApiUrls from "../APIURL/ApiUrls";
 
 function Product() {
-  const baseApiUrl = "http://helpyouservice.in:4005/";
-  const apiUrl = `${baseApiUrl}product/getProduct`;
-  const addProductUrl = `${baseApiUrl}product/addProduct`;
-  const updateProductUrl = `${baseApiUrl}Product/updateProduct`;
-  const deleteProductUrl = `${baseApiUrl}Product/deleteProduct`;
-  const subCategoriesUrl = `${baseApiUrl}sub_category/getSubcategory`;
+  // const baseApiUrl = "http://192.168.1.37:4005/";
+  // const apiUrl = `${baseApiUrl}product/getProduct`;
+  // const addProductUrl = `${baseApiUrl}product/addProduct`;
+  // const updateProductUrl = `${baseApiUrl}Product/updateProduct`;
+  // const deleteProductUrl = `${baseApiUrl}Product/deleteProduct`;
+  // const subCategoriesUrl = `${baseApiUrl}sub_category/getSubcategory`;
 
   const [data, setData] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -29,7 +30,7 @@ function Product() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(ApiUrls.GET_PRODUCT);
       if (response.ok) {
         const responseData = await response.json();
         const receivedData = Array.isArray(responseData)
@@ -44,7 +45,7 @@ function Product() {
 
   const fetchSubCategories = async () => {
     try {
-      const response = await fetch(subCategoriesUrl);
+      const response = await fetch(ApiUrls.GET_SUBCATEGORY);
       if (response.ok) {
         const responseData = await response.json();
         const receivedData = Array.isArray(responseData)
@@ -83,7 +84,7 @@ function Product() {
     }
 
     try {
-      const response = await fetch(updateProductUrl, {
+      const response = await fetch(ApiUrls.UPDATE_PRODUCT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +134,7 @@ function Product() {
 
   const handleRemoveClick = async (id) => {
     try {
-      const response = await fetch(deleteProductUrl, {
+      const response = await fetch(ApiUrls.DELETE_PRODUCT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +172,7 @@ function Product() {
 
   const handleSaveProduct = async () => {
     try {
-      const response = await fetch(addProductUrl, {
+      const response = await fetch(ApiUrls.ADD_PRODUCT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

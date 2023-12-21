@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./User.css";
+import ApiUrls from "../APIURL/ApiUrls";
 
 function User() {
-  const baseApiUrl = "http://helpyouservice.in:4005/";
+  // const baseApiUrl = "http://192.168.1.37:4005/";
   const [page, setPage] = useState(1);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ function User() {
     try {
       setLoading(true);
 
-      const apiUrl = `${baseApiUrl}user/getUser?page=${page}`;
+      const apiUrl = `${ApiUrls.BASE_URL}user/getUser?page=${page}`;
       console.log("API URL:", apiUrl);
 
       // Making a POST request
@@ -54,7 +55,7 @@ function User() {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const getImageUrl = (imageName) => `${baseApiUrl}images/${imageName}`;
+  const getImageUrl = (imageName) => `${ApiUrls.BASE_URL}images/${imageName}`;
 
   return (
     <div className="User">

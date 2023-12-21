@@ -1,9 +1,11 @@
 // Order.js
 import React, { useState, useEffect } from "react";
 import "./Order.css";
+import ApiUrls from "../APIURL/ApiUrls";
 
 function Order() {
-  const orderApiUrl = "http://helpyouservice.in:4005/order/GetOrders";
+  // const baseApiUrl = "http://192.168.1.37:4005/";
+  // const orderApiUrl = `${baseApiUrl}order/GetOrders`;
 
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -14,7 +16,7 @@ function Order() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(orderApiUrl);
+      const response = await fetch(ApiUrls.GET_ORDER);
       if (!response.ok) {
         throw new Error(`Failed to fetch data: ${response.status}`);
       }

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./Service.css";
 import "./ServiceForm.css";
 import EditServicePopup from "./EditServicePopup";
+import ApiUrls from "../APIURL/ApiUrls";
 
 function Service() {
-  const baseApiUrl = "http://helpyouservice.in:4005/";
-  const url = `${baseApiUrl}service/getService`;
-  const addServiceUrl = `${baseApiUrl}service/upload`;
-  const updateServiceUrl = `${baseApiUrl}service/updateService`;
-  const deleteServiceUrl = `${baseApiUrl}service/deleteService`;
-  const updateServiceImageUrl = `${baseApiUrl}service/updateServiceImage`;
+  // const baseApiUrl = "http://192.168.1.37:4005/";
+  // const url = `${baseApiUrl}service/getService`;
+  // const addServiceUrl = `${baseApiUrl}service/upload`;
+  // const updateServiceUrl = `${baseApiUrl}service/updateService`;
+  // const deleteServiceUrl = `${baseApiUrl}service/deleteService`;
+  // const updateServiceImageUrl = `${baseApiUrl}service/updateServiceImage`;
 
   const [data, setData] = useState([]);
   const [showAddServiceForm, setShowAddServiceForm] = useState(false);
@@ -23,7 +24,7 @@ function Service() {
   
   const fetchData = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(ApiUrls.GET_SERVICE);
       if (response.ok) {
         const data = await response.json();
         setData(data);
@@ -49,7 +50,7 @@ function Service() {
     }
 
     try {
-      const response = await fetch(updateServiceUrl, {
+      const response = await fetch(ApiUrls.UPDATE_SERVICE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ function Service() {
       formData.append("id", editedService.id);
       formData.append("image", file);
 
-      const response = await fetch(updateServiceImageUrl, {
+      const response = await fetch(ApiUrls.UPDATE_SERVICE_IMAGE, {
         method: "POST",
         body: formData,
       });
@@ -107,7 +108,7 @@ function Service() {
 
   const handleRemoveClick = async (id) => {
     try {
-      const response = await fetch(deleteServiceUrl, {
+      const response = await fetch(ApiUrls.DELETE_SERVICE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +147,7 @@ function Service() {
       formData.append("name", newService.name);
       formData.append("image", newService.image);
 
-      const response = await fetch(addServiceUrl, {
+      const response = await fetch(ApiUrls.ADD_SERVICE, {
         method: "POST",
         body: formData,
       });
@@ -224,7 +225,7 @@ function Service() {
       {data.map((dataObj) => (
         <div className="service-item" key={dataObj.id}>
           <div className="service-image">
-            <img src={"http://helpyouservice.in:4005/images/" + dataObj.image} alt={dataObj.name} />
+            <img src={`${ApiUrls.BASE_URL}images/` + dataObj.image} alt={dataObj.name} />
           </div>
           {editedService.id === dataObj.id ? (
             <EditServicePopup

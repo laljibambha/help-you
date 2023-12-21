@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import "./Sub_Category.css";
 import "./Sub_CategoryForm.css";
 import EditSubCategoryPopup from "./EditSubCategoryPopup";
+import ApiUrls from "../APIURL/ApiUrls";
 
 function SubCategory() {
-  const apiUrl = "http://helpyouservice.in:4005/sub_category/getSubcategory";
-  const addSubCategoryUrl = "http://helpyouservice.in:4005/sub_category/upload";
+  const baseApiUrl = "http://192.168.1.37:4005/";
+  const apiUrl = `${baseApiUrl}sub_category/getSubcategory`;
+  const addSubCategoryUrl = `${baseApiUrl}sub_category/upload`;
   const updateSubCategoryUrl =
-    "http://helpyouservice.in:4005/sub_category/updateSubcategory";
+    `${baseApiUrl}sub_category/updateSubcategory`;
   const deleteSubCategoryUrl =
-    "http://helpyouservice.in:4005/sub_category/deletesub_category";
+    `${baseApiUrl}sub_category/deleteSubcategory`;
   const updateSubCategoryImageUrl =
-    "http://helpyouservice.in:4005/sub_category/updatesub_categoryImage";
-  const categoriesUrl = "http://helpyouservice.in:4005/category/getCategory";
+    `${baseApiUrl}sub_category/updatesub_categoryImage`;
+  const categoriesUrl = `${baseApiUrl}category/getCategory`;
 
   const [data, setData] = useState([]);
   const [showAddSubCategoryForm, setShowAddSubCategoryForm] = useState(false);
@@ -37,6 +39,9 @@ function SubCategory() {
           ? responseData
           : responseData.data;
         setter(receivedData);
+      } else {
+        console.error(`Error fetching data from ${url}. Response status:`, response.status);
+        console.error("Response text:", await response.text());
       }
     } catch (error) {
       console.error(`Error fetching data from ${url}:`, error);
@@ -57,7 +62,7 @@ function SubCategory() {
     }
 
     try {
-      const response = await fetch(updateSubCategoryUrl, {
+      const response = await fetch(ApiUrls.UPDATE_SUBCATEGORY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +104,7 @@ function SubCategory() {
       formData.append("id", editedSubCategory.id);
       formData.append("image", file);
 
-      const response = await fetch(updateSubCategoryImageUrl, {
+      const response = await fetch(ApiUrls.UPDATE_SUBCATEGORY_IMAGE, {
         method: "POST",
         body: formData,
       });
@@ -120,7 +125,7 @@ function SubCategory() {
 
   const handleRemoveClick = async (id) => {
     try {
-      const response = await fetch(deleteSubCategoryUrl, {
+      const response = await fetch(ApiUrls.DELETE_SUBCATEGORY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -162,7 +167,7 @@ function SubCategory() {
       formData.append("image", newSubCategory.image);
       formData.append("category_id", newSubCategory.categoryId);
 
-      const response = await fetch(addSubCategoryUrl, {
+      const response = await fetch(ApiUrls.ADD_SUBCATEGORY, {
         method: "POST",
         body: formData,
       });
@@ -192,9 +197,9 @@ function SubCategory() {
   };
 
   useEffect(() => {
-    fetchData(apiUrl, setData);
-    fetchData(categoriesUrl, setCategories);
-  }, []);
+    fetchData(ApiUrls.GET_SUBCATEGORY, setData);
+    fetchData(ApiUrls.GET_CATEGORY, setCategories);
+  }, [ApiUrls.GET_SUBCATEGORY, ApiUrls.GET_CATEGORY]);
 
   return (
     <div className="sub-category-container">
@@ -270,7 +275,7 @@ function SubCategory() {
             <div className="sub-category-image">
               {dataObj.image && (
                 <img
-                  src={`http://helpyouservice.in:4005/images/${dataObj.image}`}
+                  src={`${ApiUrls.BASE_URL}images/${dataObj.image}`}
                   alt={dataObj.name}
                 />
               )}
