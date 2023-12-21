@@ -1,5 +1,6 @@
 class ApiUrls {
   static BASE_URL = "http://192.168.1.37:4005/";
+  static LOGIN = `${ApiUrls.BASE_URL}admin/login`
   static GET_SERVICE = `${ApiUrls.BASE_URL}service/getService`;
   static ADD_SERVICE = `${ApiUrls.BASE_URL}service/upload`;
   static UPDATE_SERVICE = `${ApiUrls.BASE_URL}service/updateService`;

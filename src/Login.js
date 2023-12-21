@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ApiUrls from "./APIURL/ApiUrls";
 import "./Login.css";
 
 function Login() {
@@ -34,10 +35,16 @@ function Login() {
       setError("Password should be at least 6 characters long");
     } else {
       try {
-        const response = await axios.post("http://192.168.1.37:4005/admin/login", {
+
+        const response = await axios.post(`${ApiUrls.LOGIN}`, {
           email,
           password,
         });
+        
+        // const response = await axios.post("http://192.168.1.37:4005/admin/login", {
+        //   email,
+        //   password,
+        // });
 
         if (response.status === 200) {
           // Save email and password to local storage immediately
