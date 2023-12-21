@@ -197,7 +197,7 @@ function Category() {
   };
 
   const fetchServices = async () => {
-    const servicesUrl = `${ApiUrls.GET_SERVICE}service/getService`;
+    const servicesUrl = `${ApiUrls.BASE_URL}service/getService`;
 
     try {
       const response = await fetch(servicesUrl);
