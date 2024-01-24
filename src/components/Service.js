@@ -24,6 +24,7 @@ function Service() {
   
   const fetchData = async () => {
     try {
+      // const response = await fetch(ApiUrls.POST_SERVICE);
       const response = await fetch(ApiUrls.GET_SERVICE);
       if (response.ok) {
         const data = await response.json();

@@ -6,6 +6,20 @@
    
 }
 
+.order-title {
+  text-align: center;
+  font-size: 33px;
+  color: red;
+}
+
+.order-info {
+  justify-content: space-between;
+}
+
+.Order-item-show-details-button {
+  margin-left: 600px;
+}
+
 .Order-item {
   background-color: #f8f8f8;
   border: 1px solid #e0e0e0;

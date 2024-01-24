@@ -23,6 +23,7 @@
 .menu li {
   padding: 10px;
   transition: background-color 0.3s ease;
+  border-radius: 0px 10px 10px 10px;
 }
 
 .menu li:hover {

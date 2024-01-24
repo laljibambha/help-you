@@ -7,7 +7,8 @@
 
 .user-h1 {
   margin-bottom: 10px;
-  color: #333;
+  font-size: 33px;
+  color: red;
 }
 
 .user-table {

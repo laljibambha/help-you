@@ -13,6 +13,7 @@ function Order() {
   const [showAddressDetails, setShowAddressDetails] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showUserDetails, setShowUserDetails] = useState(false);
+  const [orderStatus, setOrderStatus] = useState("Pending");
 
   const fetchOrders = async () => {
     try {
@@ -35,7 +36,6 @@ function Order() {
       setOrders(receivedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
-      // You can choose to handle the error in some other way if needed
     }
   };
 
@@ -63,6 +63,32 @@ function Order() {
     setShowUserDetails(true);
   };
 
+  const handleStatusButtonClick = (orderId) => {
+    // Update the order status based on the current status
+    const updateStatus =
+      orderStatus === "Pending"
+        ? "Accepted"
+        : orderStatus === "Accepted"
+        ? "On Running"
+        : orderStatus === "On Running"
+        ? "Success"
+        : orderStatus === "Success"
+        ? "Success"
+        : "Success";
+  
+    setOrderStatus(updateStatus);
+  
+    // Add logic to update the order status on the server (e.g., using an API call)
+    // ...
+  
+    // You may also want to update the local order object with the new status
+    const updatedOrders = orders.map((order) =>
+      order.id === orderId ? { ...order, status: updateStatus } : order
+    );
+  
+    setOrders(updatedOrders);
+  };
+
   const renderOrders = () => {
     return orders.map((order) => (
       <div className="Order-item" key={order.id}>
@@ -71,7 +97,24 @@ function Order() {
           <br />
           <strong>Order Date :</strong>{" "}
           {formatDateTime(order.address.created_at)}
+          <br />
+          <strong>Order Status : </strong>
+          {order.status || orderStatus}
         </p>
+        <button
+          className="Order-item-show-details-button"
+          onClick={() => handleStatusButtonClick(order.id)}
+        >
+          {orderStatus === "Pending"
+            ? "Accepted"
+            : orderStatus === "Accepted"
+            ? "On Running"
+            : orderStatus === "On Running"
+            ? "Success"
+            : orderStatus === "Success"
+            ? "Success"
+            : "Success"} {orderStatus === order.id}
+        </button>
         <button onClick={() => handleOrderDetailsClick(order)}>
           Show Order Details
         </button>
@@ -106,6 +149,11 @@ function Order() {
       return (
         <div className="Popup">
           <h3>Order Details</h3>
+
+          <p className="order-info">
+            <strong>Order Status :</strong> {selectedOrder.status}
+          </p>
+
           <p className="order-info">
             <strong>Order ID:</strong> {selectedOrder.id}
           </p>
