@@ -1,37 +1,28 @@
-import React, { useRef } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Login';
-import Home from './components/Home';
-import Dashboard from './components/Dashboard';
-import Service from './components/Service';
-import User from './components/User';
-import Category from './components/Category';
-import './App.css';
-import SubCategory from './components/Sub_Category';
-import Product from './components/Product';
-import Order from './components/Order';
-import Help from './components/Help';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./Login";
+import Home from "./components/Home";
+import Dashboard from "./components/Dashboard";
+import Service from "./components/Service";
+import User from "./components/User";
+import Category from "./components/Category";
+import "./App.css";
+import SubCategory from "./components/Sub_Category";
+import Product from "./components/Product";
+import Order from "./components/Order";
+import Help from "./components/Help";
 
 function App() {
-  const themeRef = useRef('light');
+  let theme = localStorage.getItem("theme") || "light";
 
   const toggleTheme = () => {
-    const newTheme = themeRef.current === 'light' ? 'dark' : 'light';
-    document.documentElement.classList.remove(themeRef.current);
-    document.documentElement.classList.add(newTheme);
-    themeRef.current = newTheme;
-    localStorage.setItem('theme', newTheme);
+    theme = theme === "light" ? "dark" : "light";
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+    localStorage.setItem("theme", theme);
   };
 
-  const initializeTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      themeRef.current = savedTheme;
-      document.documentElement.classList.add(savedTheme);
-    }
-  };
-
-  initializeTheme();
+  document.documentElement.classList.add(theme);
 
   return (
     <Router>
@@ -40,7 +31,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route
             path="/home"
-            element={<Home toggleTheme={toggleTheme} theme={themeRef.current} />}
+            element={<Home toggleTheme={toggleTheme} theme={theme} />}
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
