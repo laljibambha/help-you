@@ -10,7 +10,7 @@ import './App.css';
 import SubCategory from './components/Sub_Category';
 import Product from './components/Product';
 import Order from './components/Order';
-import Help from './components/Help'; 
+import Help from './components/Help';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -55,4 +55,4 @@ function App() {
   );
 }
 
-export default App; // Export App as default
+export default App;
