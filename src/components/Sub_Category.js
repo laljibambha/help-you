@@ -5,17 +5,6 @@ import EditSubCategoryPopup from "./EditSubCategoryPopup";
 import ApiUrls from "../APIURL/ApiUrls";
 
 function SubCategory() {
-  const baseApiUrl = "http://192.168.1.37:4005/";
-  const apiUrl = `${baseApiUrl}sub_category/getSubcategory`;
-  const addSubCategoryUrl = `${baseApiUrl}sub_category/upload`;
-  const updateSubCategoryUrl =
-    `${baseApiUrl}sub_category/updateSubcategory`;
-  const deleteSubCategoryUrl =
-    `${baseApiUrl}sub_category/deleteSubcategory`;
-  const updateSubCategoryImageUrl =
-    `${baseApiUrl}sub_category/updatesub_categoryImage`;
-  const categoriesUrl = `${baseApiUrl}category/getCategory`;
-
   const [data, setData] = useState([]);
   const [showAddSubCategoryForm, setShowAddSubCategoryForm] = useState(false);
   const [newSubCategory, setNewSubCategory] = useState({
@@ -30,7 +19,7 @@ function SubCategory() {
   });
   const [categories, setCategories] = useState([]);
 
-  const fetchData = async (url, setter) => {
+  const fetchData = async (url, setData) => {
     try {
       const response = await fetch(url);
       if (response.ok) {
@@ -38,7 +27,7 @@ function SubCategory() {
         const receivedData = Array.isArray(responseData)
           ? responseData
           : responseData.data;
-        setter(receivedData);
+        setData(receivedData);
       } else {
         console.error(`Error fetching data from ${url}. Response status:`, response.status);
         console.error("Response text:", await response.text());
@@ -54,6 +43,10 @@ function SubCategory() {
 
   const handleEditSubCategoryName = (e) => {
     setEditedSubCategory({ ...editedSubCategory, name: e.target.value });
+  };
+
+  const fetchAndSetData = async () => {
+    await fetchData(ApiUrls.GET_SUBCATEGORY, setData);
   };
 
   const handleSaveEditedSubCategory = async () => {
@@ -173,9 +166,8 @@ function SubCategory() {
       });
 
       if (response.ok) {
-        const addedSubCategory = await response.json();
-        setData([...data, addedSubCategory]);
-        handleCancelEdit(); // Close the form only after a successful response
+        await fetchAndSetData();
+        handleCancelEdit();
       } else {
         console.error("Failed to add SubCategory");
       }
@@ -199,7 +191,7 @@ function SubCategory() {
   useEffect(() => {
     fetchData(ApiUrls.GET_SUBCATEGORY, setData);
     fetchData(ApiUrls.GET_CATEGORY, setCategories);
-  }, [ApiUrls.GET_SUBCATEGORY, ApiUrls.GET_CATEGORY]);
+  }, []);
 
   return (
     <div className="sub-category-container">

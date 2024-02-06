@@ -160,7 +160,7 @@ function Category() {
       formData.append("image", newCategory.image);
       formData.append("service_id", selectedService); // Use the selected service ID
 
-      const response = await fetch(`${ApiUrls.ADD_CATEGORY}category/upload`, {
+      const response = await fetch(ApiUrls.ADD_CATEGORY , {
         method: "POST",
         body: formData,
       });

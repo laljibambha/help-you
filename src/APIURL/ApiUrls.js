@@ -2,6 +2,7 @@ class ApiUrls {
   // static BASE_URL = "http://helpyouservice.in:4006/";
   // static BASE_URL = "http://localhost:4005/";
   static BASE_URL = "http://helpyouservice.in:4005/";
+  
   // static BASE_URL = "http://192.168.1.33:4005/";
   static LOGIN = `${ApiUrls.BASE_URL}admin/login`;
   // static POST_SERVICE = `${ApiUrls.BASE_URL}service/getService`;
